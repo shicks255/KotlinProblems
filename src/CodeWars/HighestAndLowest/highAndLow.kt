@@ -7,11 +7,9 @@ fun main()
 
 fun highAndLow(numbers: String): String{
     val stringNumbers = numbers.split(" ")
-
     val numbers = stringNumbers.map { x -> x.toInt() }
 
     val highest = numbers.max()
     val lowest = numbers.min()
-
     return "$highest $lowest"
 }
