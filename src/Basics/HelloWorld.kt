@@ -2,7 +2,14 @@ package Basics
 
 import java.util.*
 
-fun main(args: Array<String>): Unit {
+fun main(): Unit {
+    println("hi")
+
+    val steve = Person("Steve", "Hicks", 25)
+    println(steve)
+}
+
+fun main2(args: Array<String>): Unit {
 
     println("Hello World")
 
