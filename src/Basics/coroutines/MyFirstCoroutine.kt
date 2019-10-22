@@ -6,27 +6,28 @@ import kotlin.concurrent.thread
 
 fun main(args: Array<String>) {
 
-    val runner = MyFirstCoroutine()
+    val counter = AtomicInteger()
+    val runner = MyFirstCoroutine(counter)
 
-//    runner.threads()
-//    runner.coRout()
+    runner.threads()
+    runner.coRout()
     runner.suspendedCoRout()
-    runner.test()
+//    runner.test()
+
+    println(counter.get())
 }
 
 
-class MyFirstCoroutine {
 
-    private val counter = AtomicInteger()
-
+class MyFirstCoroutine(val counter: AtomicInteger) {
 
     fun threads() {
 
         val start = System.currentTimeMillis()
 
-        for (i in 1..100_000) {
+        for (i in 1..1_000_000) {
             thread(start = true) {
-                counter.addAndGet(i)
+                counter.addAndGet(1)
             }
         }
         println(System.currentTimeMillis() - start)
@@ -36,9 +37,9 @@ class MyFirstCoroutine {
 
         val start = System.currentTimeMillis()
 
-        for (i in 1..100_000) {
+        for (i in 1..1_000_000) {
             GlobalScope.launch {
-                counter.addAndGet(i)
+                counter.addAndGet(1)
             }
         }
 
@@ -53,6 +54,7 @@ class MyFirstCoroutine {
         val sum = (1..1_000_000).map { n ->
             GlobalScope.async {
                 delay(100)
+                counter.addAndGet(1)
                 n
             }
         }
