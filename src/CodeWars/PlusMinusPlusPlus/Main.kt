@@ -1,6 +1,5 @@
 package CodeWars.PlusMinusPlusPlus
 
-import CodeWars.MexicanWave.basicTests
 import kotlin.test.assertEquals
 
 fun main() {
