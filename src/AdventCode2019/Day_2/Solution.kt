@@ -4,17 +4,40 @@ import java.io.FileReader
 
 fun main() {
 
+    var answer = 0
+    var noun = 0
+    var verb = 0
+
+    while (answer != 19690720) {
+        answer = runProgram(noun, verb)
+        if (answer == 19690720) {
+            println("the noun is $noun and the verb is $verb")
+            println("the final answer is ${100 * noun + verb}")
+        }
+        else
+            if (verb < 99)
+                verb += 1
+            else {
+                verb = 0
+                noun += 1
+            }
+    }
+
+}
+
+fun runProgram(noun: Int, verb: Int): Int {
+
     val input = getInputArray().toMutableList()
 
-    input.set(1, 12)
-    input[2] = 2
+    input.set(1, noun)
+    input[2] = verb
 
     var mover = 0
     while (mover < input.size-3) {
         mover = calculate(input, mover)
     }
 
-    println(input)
+    return input.get(0)
 }
 
 fun calculate(array: MutableList<Int>, mover: Int): Int {
