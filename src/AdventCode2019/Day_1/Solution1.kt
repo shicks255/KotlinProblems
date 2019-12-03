@@ -1,6 +1,5 @@
 package AdventCode2019.Day_1
 
-import java.io.File
 import java.io.FileReader
 
 fun main() {
