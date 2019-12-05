@@ -10,17 +10,49 @@ fun main() {
 //    val wires = getInput()
     val wires = Pair(listOf("R8","U5","L5","D3"), listOf("U7","R6","D4","L4"))
 
+    val grid1: MutableList<Pair<Int, Int>> = mutableListOf(Pair(0,0))
+    drawWire(wires.first, grid1)
 
-    val set1 = wires.first.toSet()
-    val set2 = wires.second.toSet()
+    val grid2: MutableList<Pair<Int, Int>> = mutableListOf(Pair(0,0))
+    drawWire(wires.second, grid2)
 
-    val completeSet = set1.associate { it to 1 }
-    val completeSet2 = set2.associate { k -> if (completeSet.containsKey(k)) k to 2 else k to 1 }
 
     println("test")
-
 }
 
+fun drawWire(wire: List<String>, grid: MutableList<Pair<Int, Int>>) {
+    wire.forEach{ coord ->
+        val direction = coord.first()
+        val moves = coord.drop(1).toInt()
+        when (direction) {
+            'L' -> markGrid(grid, moves, 'L')
+            'R' -> markGrid(grid, moves, 'R')
+            'U' -> markGrid(grid, moves, 'U')
+            'D' ->markGrid(grid, moves, 'D')
+        }
+    }
+}
+
+fun markGrid(grid: MutableList<Pair<Int, Int>>, moves: Int, direction: Char) {
+    for (x in 1..moves) {
+        when (direction) {
+            'L','R' -> {
+                val prev: Pair<Int, Int> = grid.last()
+                if (direction == 'L')
+                    grid.add(prev.copy(prev.first-1, prev.second))
+                else if (direction == 'R')
+                    grid.add(prev.copy(prev.first+1, prev.second))
+            }
+            'U','D' -> {
+                val prev: Pair<Int, Int> = grid.last()
+                if (direction == 'U')
+                    grid.add(prev.copy(prev.first, prev.second+1))
+                if (direction == 'D')
+                    grid.add(prev.copy(prev.first, prev.second-1))
+            }
+        }
+    }
+}
 
 fun main2() {
     val wires = getInput()
