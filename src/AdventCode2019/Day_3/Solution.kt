@@ -5,22 +5,41 @@ import CodeWars.ShortestWord.findShort
 import java.io.FileReader
 import java.lang.StringBuilder
 
+data class Point(val x: Int, val y: Int, val steps: Int) {
+    override fun equals(other: Any?): Boolean {
+        if (other is Point)
+            return other.x == this.x && other.y == this.y
+        return false
+    }
+}
+
 fun main() {
 
-//    val wires = getInput()
-    val wires = Pair(listOf("R8","U5","L5","D3"), listOf("U7","R6","D4","L4"))
+    val wires = getInput()
+//    val wires = Pair(listOf("R8","U5","L5","D3"), listOf("U7","R6","D4","L4"))
 
-    val grid1: MutableList<Pair<Int, Int>> = mutableListOf(Pair(0,0))
+    val grid1: MutableList<Point> = mutableListOf(Point(0,0,0))
     drawWire(wires.first, grid1)
 
-    val grid2: MutableList<Pair<Int, Int>> = mutableListOf(Pair(0,0))
+    val grid2: MutableList<Point> = mutableListOf(Point(0,0,0))
     drawWire(wires.second, grid2)
 
-
+    getIntersection(grid1, grid2)
     println("test")
 }
 
-fun drawWire(wire: List<String>, grid: MutableList<Pair<Int, Int>>) {
+fun getIntersection(grid2: MutableList<Point>, grid1: MutableList<Point>) {
+
+    val sort1 = grid1.sortedWith(compareBy({Math.abs(it.x) + Math.abs(it.y)}))
+    val sort2 = grid2.sortedWith(compareBy({Math.abs(it.x) + Math.abs(it.y)}))
+
+    val new1 = sort1.filter { sort2.contains(it) }
+    val new2 = sort2.filter { sort1.contains(it) }
+
+    println("hi")
+}
+
+fun drawWire(wire: List<String>, grid: MutableList<Point>) {
     wire.forEach{ coord ->
         val direction = coord.first()
         val moves = coord.drop(1).toInt()
@@ -33,87 +52,25 @@ fun drawWire(wire: List<String>, grid: MutableList<Pair<Int, Int>>) {
     }
 }
 
-fun markGrid(grid: MutableList<Pair<Int, Int>>, moves: Int, direction: Char) {
+fun markGrid(grid: MutableList<Point>, moves: Int, direction: Char) {
     for (x in 1..moves) {
         when (direction) {
             'L','R' -> {
-                val prev: Pair<Int, Int> = grid.last()
+                val prev: Point = grid.last()
                 if (direction == 'L')
-                    grid.add(prev.copy(prev.first-1, prev.second))
+                    grid.add(Point(prev.x-1, prev.y, prev.steps+1))
                 else if (direction == 'R')
-                    grid.add(prev.copy(prev.first+1, prev.second))
+                    grid.add(Point(prev.x+1, prev.y, prev.steps+1))
             }
             'U','D' -> {
-                val prev: Pair<Int, Int> = grid.last()
+                val prev: Point = grid.last()
                 if (direction == 'U')
-                    grid.add(prev.copy(prev.first, prev.second+1))
+                    grid.add(Point(prev.x, prev.y+1, prev.steps+1))
                 if (direction == 'D')
-                    grid.add(prev.copy(prev.first, prev.second-1))
+                    grid.add(Point(prev.x, prev.y-1, prev.steps+1))
             }
         }
     }
-}
-
-fun main2() {
-    val wires = getInput()
-//    val wires = Pair(listOf("R8","U5","L5","D3"), listOf("U7","R6","D4","L4"))
-
-    val board = MutableList<MutableList<String>>(20_000, { i -> MutableList(20_000, {i -> "."}) })
-
-    board[50][50] = "0"
-
-    drawBoardFromWire(wires.first, board, false)
-    drawBoardFromWire(wires.second, board, true)
-
-    println(wires)
-    printBoard(board)
-}
-
-fun drawBoardFromWire(wire: List<String>, board: MutableList<MutableList<String>>, lastAttempt: Boolean) {
-    var start = Pair(5000,5000)
-
-    wire.forEach {move ->
-        val coord = move.drop(1).toInt()
-        start = draw(coord, move.first(), board, start, lastAttempt)
-    }
-
-    board[50][50] = "0"
-}
-
-fun markBoard(board: MutableList<MutableList<String>>, first: Int, second: Int, char: String) {
-
-    if (board[first][second] == ".")
-        board[first][second] = char
-    else if (char == "2" && board[first][second] == "1")
-        board[first][second] = "X"
-}
-
-fun draw(newCord: Int, direction: Char, board: MutableList<MutableList<String>>, start: Pair<Int, Int>, last: Boolean): Pair<Int, Int> {
-    when (direction) {
-        'R' -> {
-            for (i in 1..newCord)
-                markBoard(board, start.first, start.second + i, if (last) "2" else "1")
-            return start.copy(start.first, start.second + newCord)
-        }
-        'L' -> {
-            for (i in 1..newCord)
-                markBoard(board, start.first, start.second-i, if (last) "2" else "1")
-            return start.copy(start.first, start.second - newCord)
-        }
-        'U' -> {
-            for (i in 1..newCord)
-                markBoard(board, start.first - i, start.second, if (last) "2" else "1")
-            return start.copy(start.first - newCord, start.second)
-        }
-        'D' -> {
-            for (i in 1..newCord)
-                markBoard(board, start.first + i, start.second, if (last) "2" else "1")
-            return start.copy(start.first + newCord, start.second)
-        }
-    }
-
-    //this shouldn't happen
-    return start
 }
 
 fun printBoard(board: MutableList<MutableList<String>>) {
