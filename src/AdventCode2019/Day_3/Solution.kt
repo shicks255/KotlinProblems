@@ -1,9 +1,6 @@
 package AdventCode2019.Day_3
 
-import CodeWars.PrinterErrors.printerErrors
-import CodeWars.ShortestWord.findShort
 import java.io.FileReader
-import java.lang.StringBuilder
 
 data class Point(val x: Int, val y: Int, val steps: Int) {
     override fun equals(other: Any?): Boolean {
@@ -71,20 +68,6 @@ fun markGrid(grid: MutableList<Point>, moves: Int, direction: Char) {
             }
         }
     }
-}
-
-fun printBoard(board: MutableList<MutableList<String>>) {
-
-    val string = StringBuilder()
-
-    board.forEach {
-        it.forEach {
-            string.append(it)
-        }
-        string.append("\r\n")
-    }
-
-    println(string)
 }
 
 fun getInput(): Pair<List<String>, List<String>> {
