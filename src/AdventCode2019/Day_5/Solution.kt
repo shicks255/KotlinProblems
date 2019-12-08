@@ -52,7 +52,7 @@ fun calculate(mover: Int, instructions: MutableList<Int>): Int {
         3 -> {
             val p1 = instructions[mover+1]
 
-            instructions[p1] = 1
+            instructions[p1] = 5
             return mover + 2
         }
         4 -> {
@@ -62,6 +62,57 @@ fun calculate(mover: Int, instructions: MutableList<Int>): Int {
 
             println(param1)
             return mover +2
+        }
+        5 -> {
+            val p1 = instructions[mover+1]
+            val p2 = instructions[mover+2]
+
+            val param1 = if (instructionMode1 == 1) p1 else instructions[p1]
+            val param2 = if (instructionMode2 == 1) p2 else instructions[p2]
+
+            if (param1 != 0)
+                return param2
+            return mover + 3
+        }
+        6 -> {
+            val p1 = instructions[mover+1]
+            val p2 = instructions[mover+2]
+
+            val param1 = if (instructionMode1 == 1) p1 else instructions[p1]
+            val param2 = if (instructionMode2 == 1) p2 else instructions[p2]
+            if (param1 == 0)
+                return param2
+            return mover + 3
+        }
+        7 -> {
+            val p1 = instructions[mover+1]
+            val p2 = instructions[mover+2]
+            val p3 = instructions[mover+3]
+
+            val param1 = if (instructionMode1 == 1) p1 else instructions[p1]
+            val param2 = if (instructionMode2 == 1) p2 else instructions[p2]
+
+            if (param1 < param2)
+                instructions[p3] = 1
+            else
+                instructions[p3] = 0
+
+            return mover + 4
+        }
+        8 -> {
+            val p1 = instructions[mover+1]
+            val p2 = instructions[mover+2]
+            val p3 = instructions[mover+3]
+
+            val param1 = if (instructionMode1 == 1) p1 else instructions[p1]
+            val param2 = if (instructionMode2 == 1) p2 else instructions[p2]
+
+            if (param1 == param2)
+                instructions[p3] = 1
+            else
+                instructions[p3] = 0
+
+            return mover + 4
         }
         else -> {
             return instructions.size
