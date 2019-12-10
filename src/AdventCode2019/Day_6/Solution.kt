@@ -56,9 +56,30 @@ fun main() {
 
     //first find the a common child
 
-
-
+    var count2 = mutableListOf<Int>()
+    countPath("YOU", isOrbittedBy, orbits, count2)
     println(count.size)
+}
+
+fun countPath(start: String, isOrbitedBy: MutableMap<String, MutableList<String>>,
+              orbits: MutableMap<String, MutableList<String>>,
+              count: MutableList<Int>) {
+
+    val listOfOrbited = orbits.get(start)
+    if (listOfOrbited == null)
+        return
+
+    val listofIsOrbitedBy = isOrbitedBy.get(start)
+    if (listOfOrbited.contains("SAN")) {
+        count.add(1)
+    }
+    else {
+        for (x in listOfOrbited) {
+            count.add(1)
+            countPath(x, isOrbitedBy, orbits, count)
+        }
+    }
+
 }
 
 fun countOrbits(planet: String, orbits: MutableMap<String, MutableList<String>>, count: MutableList<Int>) {
